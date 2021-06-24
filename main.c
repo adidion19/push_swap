@@ -584,6 +584,28 @@ t_tab	ft_little(t_tab tab)
 	return (tab);
 }
 
+int		ft_find_mid(t_tab tab)
+{
+	int i;
+	long long a;
+
+	i = -1;
+	a = 0;
+	while (++i < tab.ac_a)
+	{
+		a += tab.a[i];
+	}
+	a = a / tab.ac_a;
+	return (a);
+}
+
+t_tab	ft_big(t_tab tab, int div)
+{
+	int mid;
+
+	mid = ft_find_mid(tab);
+}
+
 t_tab	ft_algo_bus(t_tab tab)
 {
 	if (tab.ac_a == 2)
