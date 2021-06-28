@@ -604,6 +604,8 @@ t_tab	ft_big(t_tab tab, int div)
 	int mid;
 
 	mid = ft_find_mid(tab);
+	div = 0; // a bouger mdrr
+	return (tab);
 }
 
 t_tab	ft_algo_bus(t_tab tab)
