@@ -583,7 +583,7 @@ int		*ft_sort_int_tab(int *tab, int size)
 	j = 0;
 	a = malloc(sizeof(int) * size);
 	m = -1;
-	while (++m < size)
+	while (++m < size - 1)
 		a[m] = tab[m];
 	while (j < size - 1)
 	{
@@ -592,8 +592,8 @@ int		*ft_sort_int_tab(int *tab, int size)
 		{
 			if (a[i] > a[i + 1])
 			{
-				k = tab[i];
-				a[i] = tab[i + 1];
+				k = a[i];
+				a[i] = a[i + 1];
 				a[i + 1] = k;
 			}
 			i++;
@@ -613,7 +613,7 @@ int		ft_find_mid(t_tab tab, int div)
 	a = 0;
 	sorted = ft_sort_int_tab(tab.a, tab.ac_a);
 	a = tab.ac_a / div;
-	a = sorted[a];
+	a = sorted[a - 1];
 	free (sorted);
 	return (a);
 }
@@ -646,6 +646,8 @@ int		ft_place_b(t_tab tab)
 			min_2 = tab.b[i];
 		}
 	}
+	//if (k == tab.ac_b - 1)
+	//	return (k);
 	return (j);
 }
 
@@ -688,6 +690,22 @@ int		ft_min_2_b(t_tab tab)
 	return (min_2);
 }
 
+int		ft_find_rotate(t_tab tab, int mid)
+{
+	int ac_1;
+	int i;
+
+	i = 0;
+	ac_1 = tab.ac_a;
+	while (1)
+	{
+		if (tab.a[++i] <= mid)
+			return (1);
+		if (tab.a[--ac_1] <= mid)
+		return (0);
+	}
+}
+
 t_tab	ft_big(t_tab tab, int div)
 {
 	int mid;
@@ -697,19 +715,40 @@ t_tab	ft_big(t_tab tab, int div)
 	int min_2;
 	int bool;
 	int a_long;
+	//int rotate;
 
 	div++;
 	while (--div > 1)
 	{
 		mid = ft_find_mid(tab, div);
 		ac_a = tab.ac_a;
+		ac_a--;
+		//rotate = ft_find_rotate(tab, mid);
+		//printf("%d\n%d\n%d\n", ac_a, div, mid);
 		while (ac_a--)
 		{
-			if ((tab.a[0] <= mid && tab.ac_a > 1))
+			while ((tab.a[0] <= mid && tab.ac_a > 1))
+			{
 				tab = ft_sort_bus(tab, "pb");
-			tab = ft_sort_bus(tab, "ra");
+				if (tab.b[0] < tab.b[1] && tab.a[0] > tab.a[1])
+					tab = ft_sort_bus(tab, "ss");
+				if (ac_a > 1)
+				ac_a--;
+			}
+			//if (rotate == 1)
+				tab = ft_sort_bus(tab, "ra");
+			//else
+			//	tab = ft_sort_bus(tab, "rra");
 		}
 	}
+	
+	//int i = -1;
+	//while (++i < tab.ac_a)
+	//{
+	//	printf("|%d|", i);
+	//	printf("%d\n", tab.a[i]);
+	//}
+	//exit(1);
 	a_long = tab.ac_a;
 	bool = 0;
 	while (tab.ac_a > 3 && ft_is_sort(tab) == 0)
@@ -739,11 +778,10 @@ t_tab	ft_big(t_tab tab, int div)
 			tab = ft_sort_bus(tab, "sb");
 	}
 		tab = ft_three(tab);
-	//while (--a_long - 3)
-	//{
-	//	tab = ft_sort_bus(tab, "pa");
-	//	printf("A");
-	//}
+	while (--a_long - 3)
+	{
+		tab = ft_sort_bus(tab, "pa");
+	}
 	while (tab.ac_b)
 	{
 		bool = 0;
@@ -751,6 +789,10 @@ t_tab	ft_big(t_tab tab, int div)
 		place = ft_place_b(tab);
 		if (min_2 != tab.a[0] && min_2 != tab.a[1])
 		min_2 = ft_min_2_b(tab);
+		else if ((tab.b[1] == min || (tab.b[1] == min_2 && tab.b[0] != min)) && (tab.a[0] > tab.a[1]))
+			tab = ft_sort_bus(tab, "ss");
+		else if (tab.a[0] > tab.a[1])
+			tab = ft_sort_bus(tab, "sa");
 		if (tab.b[1] == min || (tab.b[1] == min_2 && tab.b[0] != min))
 		{
 			bool = 1;
@@ -771,14 +813,16 @@ t_tab	ft_big(t_tab tab, int div)
 			}
 		}
 		tab = ft_sort_bus(tab, "pa");
-		if (tab.a[0] > tab.a[1])
-			tab = ft_sort_bus(tab, "sa");
 	}
+	if (tab.a[0] > tab.a[1])
+			tab = ft_sort_bus(tab, "sa");
 	return (tab);
 }
 
 t_tab	ft_algo_bus(t_tab tab)
 {
+	if (ft_is_sort(tab) == 1)
+		return (tab);
 	if (tab.ac_a == 2)
 		tab = ft_two(tab);
 	else if (tab.ac_a < 2)
@@ -788,9 +832,9 @@ t_tab	ft_algo_bus(t_tab tab)
 	else if (tab.ac_a < 70)
 		tab = ft_little(tab);
 	else if (tab.ac_a < 200)
-		tab = ft_big(tab, 5);
+		tab = ft_big(tab, 4);
 	else
-		tab = ft_big(tab, 7);
+		tab = ft_big(tab, 9);
 	return (tab);
 }
 
@@ -807,7 +851,7 @@ int		main(int ac, char **av)
 	tab.ac_b = 0;
 	tab.a = malloc(sizeof(int) * tab.ac_a);
 	if (!tab.a)
-		exit (1);
+		exit(1);
 	while (++i < ac)
 		tab.a[i] = ft_atoi(av[i + 1]);
 	tab = ft_algo_bus(tab);
