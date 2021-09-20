@@ -25,6 +25,6 @@ typedef struct	s_tab
 	int		ac_b;
 }				t_tab;
 
-int			ft_atoi(const char *str);
+int			ft_atoi(const char *str, t_tab tab);
 
 #endif

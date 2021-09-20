@@ -315,8 +315,10 @@ t_tab	ft_sort_bus(t_tab tab, char *type)
 
 void	ft_error(t_tab tab)
 {
-	free(tab.a);
-	free(tab.b);
+	if (tab.a)
+		free(tab.a);
+	if (tab.b)	
+		free(tab.b);
 	printf("Error\n");
 	exit(1);
 }
@@ -572,7 +574,7 @@ t_tab	ft_little(t_tab tab)
 	return (tab);
 }
 
-int		*ft_sort_int_tab(int *tab, int size)
+int		*ft_sort_int_tab(t_tab tab, int size)
 {
 	int i;
 	int j;
@@ -582,9 +584,11 @@ int		*ft_sort_int_tab(int *tab, int size)
 
 	j = 0;
 	a = malloc(sizeof(int) * size);
+	if (!a)
+		ft_error(tab);
 	m = -1;
 	while (++m < size - 1)
-		a[m] = tab[m];
+		a[m] = tab.a[m];
 	while (j < size - 1)
 	{
 		i = 0;
@@ -611,7 +615,7 @@ int		ft_find_mid(t_tab tab, int div)
 
 	i = -1;
 	a = 0;
-	sorted = ft_sort_int_tab(tab.a, tab.ac_a);
+	sorted = ft_sort_int_tab(tab, tab.ac_a);
 	a = tab.ac_a / div;
 	a = sorted[a - 1];
 	free (sorted);
@@ -787,7 +791,7 @@ t_tab	ft_big(t_tab tab, int div)
 		bool = 0;
 		min = ft_min_b(tab);
 		place = ft_place_b(tab);
-		if (min_2 != tab.a[0] && min_2 != tab.a[1])
+		if (min_2 != tab.a[0] && min_2 != tab.a[1] && tab.ac_b > 4)
 		min_2 = ft_min_2_b(tab);
 		else if ((tab.b[1] == min || (tab.b[1] == min_2 && tab.b[0] != min)) && (tab.a[0] > tab.a[1]))
 			tab = ft_sort_bus(tab, "ss");
@@ -818,9 +822,28 @@ t_tab	ft_big(t_tab tab, int div)
 			tab = ft_sort_bus(tab, "sa");
 	return (tab);
 }
+int		ft_repetiton(t_tab tab)
+{
+	int i;
+	int j;
+
+	i = -1;
+	while (++i < tab.ac_a - 1)
+	{
+		j = i;
+		while (++j < tab.ac_a)
+		{
+			if (tab.a[i] == tab.a[j])
+				return (1);
+		}
+	}
+	return (0);
+}
 
 t_tab	ft_algo_bus(t_tab tab)
 {
+	if (ft_repetiton(tab) == 1)
+		ft_error(tab);
 	if (ft_is_sort(tab) == 1)
 		return (tab);
 	if (tab.ac_a == 2)
@@ -853,22 +876,22 @@ int		main(int ac, char **av)
 	if (!tab.a)
 		exit(1);
 	while (++i < ac)
-		tab.a[i] = ft_atoi(av[i + 1]);
+		tab.a[i] = ft_atoi(av[i + 1], tab);
 	tab = ft_algo_bus(tab);
 	i = -1;
 	printf("a\n");
-	while (++i < tab.ac_a)
-	{
-		printf("|%d|", i);
-		printf("%d\n", tab.a[i]);
-	}
+	//while (++i < tab.ac_a)
+	//{
+	//	printf("|%d|", i);
+	//	printf("%d\n", tab.a[i]);
+	//}
 	printf("b\n");
 	i = -1;
 	//while (++i < tab.ac_b)
 	//	printf("%d\n", tab.b[i]);
-	if (ft_is_sort(tab) == 0)
-		printf("non-");
-	printf("trié\n");
+	//if (ft_is_sort(tab) == 0)
+	//	printf("non-");
+	//printf("trié\n");
 	free(tab.b);
 	free(tab.a);
 	//system("leaks a.out");

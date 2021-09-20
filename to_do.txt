@@ -1,0 +1,5 @@
+gestion nombres identiques
+norme
+makefile
+protection mallocs
+1 er digit == 0 -> error\n _> discutable 
