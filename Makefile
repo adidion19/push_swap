@@ -18,6 +18,18 @@ NAME =	push_swap
 
 SRCS =	ft_atoi.c\
 		main.c\
+		ft_algo_bus.c\
+		ft_big.c\
+		ft_big_utils_1.c\
+		ft_big_utils_2.c\
+		ft_little.c\
+		ft_little_utils_1.c\
+		ft_little_utils_2.c\
+		ft_spe.c\
+		ft_sort_bus.c\
+		ft_move_1.c\
+		ft_move_2.c\
+		ft_move_3.c
 
 OBJS = $(SRCS:.c=.o)
 
