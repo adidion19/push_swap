@@ -16,7 +16,7 @@ t_tab	ft_big_4(t_tab tab, int min, int min_2, int place)
 {
 	if (min_2 != tab.a[0] && min_2 != tab.a[1] && tab.ac_b > 4)
 		min_2 = ft_min_2_b(tab);
-	else if ((tab.b[1] == min || (tab.b[1] == min_2 && tab.b[0] != min))
+	if ((tab.b[1] == min || (tab.b[1] == min_2 && tab.b[0] != min))
 		&& (tab.a[0] > tab.a[1]))
 		tab = ft_sort_bus(tab, "ss");
 	else if (tab.a[0] > tab.a[1])
@@ -67,7 +67,7 @@ t_tab	ft_big_2(t_tab tab, int div)
 				tab = ft_sort_bus(tab, "pb");
 				if (tab.b[0] < tab.b[1] && tab.a[0] > tab.a[1])
 					tab = ft_sort_bus(tab, "ss");
-				if (ac_a > 1)
+				if (ac_a > 0)
 					ac_a--;
 			}
 			tab = ft_sort_bus(tab, "ra");

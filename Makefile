@@ -33,13 +33,10 @@ SRCS =	ft_atoi.c\
 
 OBJS = $(SRCS:.c=.o)
 
-#LINK = ar rc
-
 all : $(NAME)
 
 $(NAME):	$(OBJS)
 	$(CC) -o $(NAME) $(CFLAGS) $(OBJS)
-#	$(LINK) $(NAME) $(OBJS)
 
 clean:
 	rm -f $(OBJS) $(OB)

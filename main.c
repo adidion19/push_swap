@@ -31,5 +31,5 @@ int	main(int ac, char **av)
 	tab = ft_algo_bus(tab);
 	free(tab.b);
 	free(tab.a);
-	exit(1);
+	exit(0);
 }

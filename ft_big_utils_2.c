@@ -61,7 +61,7 @@ int	ft_find_mid(t_tab tab, int div)
 	i = -1;
 	sorted = ft_sort_int_tab(tab, tab.ac_a);
 	a = tab.ac_a / div;
-	a = sorted[a - 1];
+	a = sorted[a];
 	free (sorted);
 	return (a);
 }
